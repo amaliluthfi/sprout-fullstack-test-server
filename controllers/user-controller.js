@@ -1,6 +1,7 @@
 const Users = require('../models/users')
 const { comparePassword } = require('../helper/bcryptjs')
 const { tokenGenerate } = require('../helper/jwt')
+const { ObjectId } = require('mongodb')
 
 class UserController {
   static findUsers(req, res) {
@@ -9,7 +10,7 @@ class UserController {
       res.json(data)
     })
     .catch(err => {
-      console.log(err);
+      console.log(err)
       res.status(500).json(err) 
     })
   }
@@ -26,7 +27,7 @@ class UserController {
       res.status(201).json(data)
     })
     .catch(err => {
-      console.log(err);
+      console.log(err)
       res.status(500).json(err) 
     })
   }
@@ -39,7 +40,6 @@ class UserController {
 
     Users.findOne({email: user.email})
     .then(dataUser => {
-      console.log(dataUser);
       if(!dataUser) res.status(404).json({msg: 'invalid email/password'})
       let match = comparePassword(user.password, dataUser.password)
       if(!match) res.status(404).json({msg: 'invalid email/password'})
@@ -51,9 +51,25 @@ class UserController {
       res.status(200).json({access_token})
     })
     .catch(err => {
-      console.log(err);
+      console.log(err)
+      res.status(500).json(err)
     })
   }
+
+  static deleteUser(req, res) {
+    let id = req.params.id
+
+    Users.deleteOne({_id: ObjectId(id)})
+    .then(data => {
+      if(data.result.n === 0) res.status(404).json({msg: 'not found'})
+      res.status(200).json({msg: 'delete successfully'})
+    })
+    .catch(err =>{
+      res.status(500).json(err)
+    })
+
+  }
+
 }
 
 module.exports = UserController
