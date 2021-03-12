@@ -14,7 +14,7 @@ app.use(express.json())
 connect().then( async (db) => {
   console.log('mongo berhasil connect');
   database = db
-
+ 
   app.use(cors())
   app.use(routes)
 
