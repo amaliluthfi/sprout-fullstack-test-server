@@ -7,7 +7,8 @@ class UserController {
   static findUsers(req, res) {
     Users.find()
     .then(data => {
-      res.json(data)
+      console.log(data);
+      res.status(200).json(data)
     })
     .catch(err => {
       console.log(err)

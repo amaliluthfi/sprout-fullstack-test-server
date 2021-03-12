@@ -5,6 +5,7 @@ const authenticate = require('../middleware/auth')
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
+router.use(authenticate)
 router.get('/', UserController.findUsers)
 router.delete('/:id', UserController.deleteUser)
 

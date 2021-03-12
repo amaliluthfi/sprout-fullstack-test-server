@@ -4,10 +4,11 @@ const { checkToken } = require('../helper/jwt')
 function authenticate(req, res, next) {
   let { access_token } = req.headers
   let decoded = checkToken(access_token)
-
-  Users.findOne({where: {email: decoded.email}})
+  let { email } = decoded
+  Users.findOne({email})
     .then(user => {
-      if(!user) res.status(400).json({message: 'you should log in first'})
+      console.log(user);
+      if(!user) res.status(400).json({message: 'invalid email/password'})
       req.user = user
       next()
     }).catch(err => {
