@@ -11,7 +11,7 @@ async function connect () {
     const db = client.db('sproutest')
     database = db
 
-    return db
+    return db 
 
   } catch(err) {
     console.log(err);
